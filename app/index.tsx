@@ -67,5 +67,10 @@ const styles = StyleSheet.create({
     },
     link: {
         marginTop: 24,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 12,
     }
 });
