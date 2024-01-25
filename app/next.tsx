@@ -9,7 +9,6 @@ const Next = () => {
     const [value, setValue] = useState('');
 
     const onChange = (text:string, submit?:boolean) => {
-        console.log()
         if(submit && text) {
             setPlayers((prev) => {
                 return [...prev, text]
