@@ -1,10 +1,15 @@
-import { Tag } from "@/components/tag";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Pressable } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Keyboard, Pressable } from "react-native";
+import { Headline } from "@/components/Headline";
+import { Button } from "@/components/Button";
+import { RootStackParamList } from "@/types/types";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const Next = () => {
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Next'>;
+
+const Next = ({navigation}: Props) => {
     const [players, setPlayers] = useState<string[] | []>([]);
     const [value, setValue] = useState('');
 
@@ -38,17 +43,21 @@ const Next = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
-                <Text style={styles.text}>Good to see ya!</Text>
-                <View>
+                <Headline>Good to see ya!</Headline>
+                <View style={styles.form}>
                     <TextInput autoCorrect={false} value={value} onChangeText={(newValue) => setValue(newValue)} style={styles.input} placeholder="Who is gonna play?" inputMode="text" placeholderTextColor="#000" onSubmitEditing={() => onChange(value, true)} />
-                    <Pressable style={styles.addBtn} onPress={() => onChange(value, true)}>
-                        <Text style={styles.text}>Add</Text>
-                        <Ionicons name="add" size={32} color="#fff" />
-                    </Pressable>
+                    <View style={styles.btnsContainer}>
+                        <Button onPress={() => onChange(value, true)} icon="add">Add</Button>
+                        {players.length > 0 && 
+                            <Button onPress={() => {
+                                navigation.navigate('Question', players)
+                            }}>Lets do it</Button>
+                        }
+                    </View>
                 </View>
                 <View style={styles.tagContainer}>
                     {players.map((item) => (
-                        <Tag key={item} label={item} onPress={removeName} />
+                        <Button key={item} onPress={() => removeName(item)} icon="close">{item}</Button>
                     ))}
                 </View>
                 <StatusBar style="dark" />
@@ -67,20 +76,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    text: {
-        color: '#fff',
-        fontSize: 32,
-    },
     input: {
-        marginTop: 24,
         backgroundColor: '#fff',
         width: 200,
         height: 30,
         borderRadius: 12,
         paddingHorizontal: 5,
-    },
-    tag: {
-        color: '#fff'
     },
     tagContainer: {
         display: 'flex',
@@ -89,10 +90,18 @@ const styles = StyleSheet.create({
         gap: 10,
         marginTop: 24,
     },
-    addBtn: {
+    btnsContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
-        gap: 6
+        justifyContent: 'center',
+        gap: 14,
+
+    },
+    form: {
+        marginTop: 24,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 14,
     }
 });
