@@ -1,0 +1,55 @@
+{
+    "questions": [
+      {
+        "id": 1,
+        "question": "How far is the moon (in kilometers)?",
+        "answer": 384400
+      },
+      {
+        "id": 2,
+        "question": "What is the largest recorded wolf pack size?",
+        "answer": 37
+      },
+      {
+        "id": 3,
+        "question": "How tall is an average adult giraffe (in meters)?",
+        "answer": 4.3
+      },
+      {
+        "id": 4,
+        "question": "What is the population of Tokyo, Japan (in millions)?",
+        "answer": 14
+      },
+      {
+        "id": 5,
+        "question": "How many bones are there in the adult human body?",
+        "answer": 206
+      },
+      {
+        "id": 6,
+        "question": "What is the wingspan of the largest recorded bald eagle?",
+        "answer": 2.3
+      },
+      {
+        "id": 7,
+        "question": "How many planets are in our solar system?",
+        "answer": 8
+      },
+      {
+        "id": 8,
+        "question": "What is the speed of light (in meters per second)?",
+        "answer": 299792458
+      },
+      {
+        "id": 9,
+        "question": "How deep is the Mariana Trench (in meters)?",
+        "answer": 10994
+      },
+      {
+        "id": 10,
+        "question": "What is the world record for the highest skydive (in meters)?",
+        "answer": 38969
+      }
+    ]
+  }
+  

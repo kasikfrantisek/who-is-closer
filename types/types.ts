@@ -1,5 +1,11 @@
 export type RootStackParamList = {
     Hello: undefined;
     Next: undefined;
-    Question: string[];
+    Question: {players:string[]};
   };
+
+  export type QuestionType = {
+    id: number;
+    question: string;
+    answer: number;
+  }

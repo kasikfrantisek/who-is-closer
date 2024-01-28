@@ -1,38 +1,117 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text} from "react-native";
-import { RootStackParamList } from "@/types/types";
+import { View, StyleSheet, Text, TextInput } from "react-native";
+import { QuestionType, RootStackParamList } from "@/types/types";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
+import data from '@/data/questions.json'
+import { Button } from "@/components/Button";
+import { Headline } from "@/components/Headline";
+import { Section } from "@/components/Section";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Question'>;
 
-const Question = ({route}: Props) => {
-    const [guesses, setGuesses] = useState<Record<string, number>>({});
+const Question = ({ route, navigation }: Props) => {
+  const [guesses, setGuesses] = useState<Record<string, number>>({});
+  const [asked, setAsked] = useState<number[]>([]);
+  const [question, setQuestion] = useState<QuestionType | null>();
+  const [textInputPlayer, setTextInputPlayer] = useState<string | null>(null);
+  const { players } = route.params;
+  const [closestPlayer, setClosestPlayer] = useState<string | null>(null);
+  const [furthestPlayer, setFurthestPlayer] = useState<string | null>(null);
 
-    useEffect(() => {
-        const newGuesses: Record<string, number> = {};
-        route.params.forEach(name => {
-            newGuesses[name] = 0;
-        });
-        setGuesses(newGuesses);
-    }, [route.params]);
+  const getRandomQuestion = () => {
+    return data.questions[Math.floor(Math.random() * data.questions.length)];
+  }
 
-    return (
-        <View style={styles.container}>
+  useEffect(() => {
+    const newGuesses: Record<string, number> = {};
+    players.forEach(name => {
+      newGuesses[name] = 0;
+    });
+    setGuesses(newGuesses);
+  }, [players]);
+
+  useEffect(() => {
+    let newQuestion = getRandomQuestion();
+    while (asked?.includes(newQuestion.id)) {
+      newQuestion = getRandomQuestion()
+    }
+    setQuestion(newQuestion);
+    setAsked((prev) => {
+      return [...prev, newQuestion.id]
+    })
+  }, []);
+
+  const handleButtonPress = (player: string) => {
+    setTextInputPlayer(player);
+  };
+
+  const handleTextInputChange = (text: string) => {
+    setGuesses(prevGuesses => ({
+      ...prevGuesses,
+      [textInputPlayer || ""]: parseFloat(text) || 0
+    }));
+  };
+
+  const handleCheckButtonPress = () => {
+    setTextInputPlayer(null)
+    const correctAnswer = question?.answer || 0;
+
+    const differences: Record<string, number> = {};
+    players.forEach(player => {
+      differences[player] = Math.abs(guesses[player] - correctAnswer);
+    });
+
+    const closestPlayer = Object.keys(differences).reduce((a, b) => (differences[a] < differences[b] ? a : b));
+    const furthestPlayer = Object.keys(differences).reduce((a, b) => (differences[a] > differences[b] ? a : b));
+
+    setClosestPlayer(closestPlayer);
+    setFurthestPlayer(furthestPlayer);
+  };
+
+  return (
+    <View style={styles.container}>
+        <Section>
+            <Headline>{question?.question}</Headline>
             {Object.entries(guesses).map(([key, value]) => (
-                <Text key={key}>
+                key === textInputPlayer ? (
+                <TextInput
+                    key={key}
+                    style={styles.input}
+                    value={value.toString()}
+                    onChangeText={handleTextInputChange}
+                    keyboardType="numeric"
+                />
+                ) : (
+                <Button key={key} onPress={() => handleButtonPress(key)}>
                     {`${key}: ${value}`}
-                </Text>
+                </Button>
+                )
             ))}
-        </View>
-    )
+            <Button primary onPress={handleCheckButtonPress}>Check</Button>
+        </Section>
+      {closestPlayer && furthestPlayer && (
+        <Section>
+            <Headline>The right answer is: {question?.answer}</Headline>
+            <Text>
+                Winner: {closestPlayer}
+            </Text>
+            <Text>
+            Looser: {furthestPlayer}
+            </Text>
+            <Button primary onPress={() => {
+                    navigation.replace('Question', { players });
+                    }}>New question</Button>
+        </Section>
+      )}
+    </View>
+  )
 };
 
 export default Question;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#25292e',
+        backgroundColor: '#7fbc8c',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

@@ -1,43 +1,25 @@
 import { Headline } from "@/components/Headline";
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from "@/types/types";
-
-
+import { Button } from "@/components/Button";
+import { Section } from "@/components/Section";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Hello'>;
 
-
 const Hello = ({navigation}:Props) => {
-    const [isPressed, setIsPressed] = useState(false);
-
-    const handlePressIn = () => {
-        setIsPressed(true);
-        navigation.navigate('Next')
-    };
-
-    const handlePressOut = () => {
-        setIsPressed(false);
-    };
-
     return (
         <View style={styles.container}>
-            <Headline>Hey what's up?</Headline>
-            <Pressable
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
-                style={({ pressed }) => [
-                    styles.button,
-                    pressed ? styles.buttonPressed : null,
-                ]}
-            >
-                <Text style={[styles.textBtn, isPressed ? styles.textBtnPressed : null]}>
-                    Let's play something
+            <Section>
+                <Headline>Who is closer?</Headline>
+                <Text style={styles.text}>This game is pretty simple...
+                    You will be presented a question, like "How far is the moon?" and each player will guess some number.
+                    Player with closest guess is the winner.
                 </Text>
-            </Pressable>
-            <StatusBar style="dark" />
+                <Button onPress={() => {navigation.navigate('Next')}} primary>
+                Let's play something
+                </Button>
+            </Section>
         </View>
     );
 };
@@ -46,33 +28,13 @@ export default Hello;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#25292e',
+        backgroundColor: '#a388ee',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    button: {
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 12,
-    },
-    buttonPressed: {
-        backgroundColor: '#fff',
-    },
-    textBtn: {
-        color: '#fff',
-    },
-    textBtnPressed: {
-        color: '#25292e',
-    },
-    link: {
-        marginTop: 24,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 12,
+    text: {
+        paddingBottom: 30,
+        textAlign: 'center'
     }
 });

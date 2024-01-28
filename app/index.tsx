@@ -7,6 +7,7 @@ import Hello from './hello';
 import Next from './next';
 import Question from './question';
 import { RootStackParamList } from '@/types/types';
+import { StatusBar } from 'expo-status-bar';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,7 @@ const App = () => {
         <Stack.Screen name="Next" component={Next} />
         <Stack.Screen name="Question" component={Question}/>
       </Stack.Navigator>
+      <StatusBar style="dark" />
     </NavigationContainer>
   );
 };

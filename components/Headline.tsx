@@ -7,7 +7,10 @@ export const Headline = ({children}:{children:ReactNode}) => {
 
 const styles = StyleSheet.create({
     text: {
-        color: '#fff',
+        color: '#000',
         fontSize: 32,
+        fontWeight: "600",
+        paddingBottom: 12,
+        textAlign: 'center'
     },
 })
