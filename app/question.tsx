@@ -72,30 +72,34 @@ const Question = ({ route, navigation }: Props) => {
     <View style={styles.container}>
         <Section>
             <Headline>{question?.question}</Headline>
-            {Object.entries(guesses).map(([key, value]) => (
+            <View style={styles.score}>
+              <View style={styles.names}>
+              {Object.entries(guesses).map(([key, value]) => (
                 key === textInputPlayer ? (
-                <TextInput
-                    key={key}
-                    style={styles.input}
-                    value={value.toString()}
-                    onChangeText={handleTextInputChange}
-                    keyboardType="numeric"
-                />
-                ) : (
-                <Button key={key} onPress={() => handleButtonPress(key)}>
-                    {`${key}: ${value}`}
-                </Button>
-                )
-            ))}
-            <Button primary onPress={handleCheckButtonPress}>Check</Button>
+                  <TextInput
+                  key={key}
+                  style={styles.input}
+                  value={value.toString()}
+                  onChangeText={handleTextInputChange}
+                  keyboardType="numeric"
+                  />
+                  ) : (
+                    <Button key={key} onPress={() => handleButtonPress(key)}>
+                      {`${key}: ${value}`}
+                  </Button>
+                  )
+                  ))}
+                </View>
+              <Button primary onPress={handleCheckButtonPress}>Check</Button>
+            </View>
         </Section>
       {closestPlayer && furthestPlayer && (
         <Section>
             <Headline>The right answer is: {question?.answer}</Headline>
-            <Text>
+            <Text style={styles.result}>
                 Winner: {closestPlayer}
             </Text>
-            <Text>
+            <Text style={styles.result}>
             Looser: {furthestPlayer}
             </Text>
             <Button primary onPress={() => {
@@ -122,6 +126,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 12,
         paddingHorizontal: 5,
+        borderWidth: 2
     },
     tagContainer: {
         display: 'flex',
@@ -135,7 +140,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 14,
-
     },
     form: {
         marginTop: 24,
@@ -143,5 +147,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 14,
+    },
+    score: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 28,
+        alignItems: 'center'
+    },
+    names: {
+      gap: 14
+    },
+    result: {
+      fontWeight: "600",
+      textTransform: "uppercase",
+      paddingBottom: 14,
     }
 });

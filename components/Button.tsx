@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {width: 3, height: 4},
         shadowOpacity: 100,
-        shadowRadius: 0
+        shadowRadius: 0,
+        height: 'auto'
     },
     tag: {
         flexDirection: 'row',

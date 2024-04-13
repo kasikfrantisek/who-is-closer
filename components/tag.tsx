@@ -1,14 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
 type Props = {
-    onPress: (label: string) => void;
+    onPress?: (label: string) => void;
     label: string;
 }
 
 export const Tag = ({onPress, label}: Props) => {
     return (
         <View>
-            <Pressable style={styles.btn} onPress={() => onPress(label)}>
+            <Pressable style={styles.btn} onPress={onPress ? () => onPress(label) : () => {}}>
                 <Text style={styles.tag}>{label}</Text>
             </Pressable>
         </View>
